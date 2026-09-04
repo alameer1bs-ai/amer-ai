@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,26 +16,36 @@
     <aside class="sidebar" id="sidebar">
 
         <div class="brand">
-            <div class="brand-logo">A</div>
+
+            <img
+                src="logo.png"
+                alt="AMER AI"
+                class="brand-image"
+            >
 
             <div>
                 <h2>AMER AI</h2>
                 <span>ذكاء يفهمك</span>
             </div>
+
         </div>
+
 
         <button class="new-chat" id="newChat">
             <span>＋</span>
             محادثة جديدة
         </button>
 
+
         <div class="sidebar-title">
             المحادثات
         </div>
 
+
         <div class="chat-history" id="chatHistory">
             <!-- المحادثات ستظهر هنا -->
         </div>
+
 
         <div class="sidebar-bottom">
 
@@ -42,6 +53,7 @@
                 🌙
                 <span>الوضع الليلي</span>
             </button>
+
 
             <button class="side-button">
                 ⚙️
@@ -63,12 +75,28 @@
                 ☰
             </button>
 
+
             <div class="header-brand">
-                <strong>AMER AI</strong>
-                <span>المساعد الذكي</span>
+
+                <img
+                    src="logo.png"
+                    alt="AMER AI"
+                    class="header-logo"
+                >
+
+                <div>
+                    <strong>AMER AI</strong>
+                    <span>المساعد الذكي</span>
+                </div>
+
             </div>
 
-            <button class="clear-button" id="clearButton">
+
+            <button
+                class="clear-button"
+                id="clearButton"
+                title="مسح المحادثة"
+            >
                 🗑️
             </button>
 
@@ -76,21 +104,39 @@
 
 
         <!-- منطقة المحادثة -->
-        <section class="chat-container" id="chatContainer">
+        <section
+            class="chat-container"
+            id="chatContainer"
+        >
 
             <!-- شاشة الترحيب -->
-            <div class="welcome" id="welcome">
+            <div
+                class="welcome"
+                id="welcome"
+            >
 
                 <div class="welcome-logo">
-                    A
+
+                    <img
+                        src="logo.png"
+                        alt="AMER AI"
+                    >
+
                 </div>
 
-                <h1>مرحبًا بك في <span>AMER AI</span> 👋</h1>
+
+                <h1>
+                    مرحبًا بك في
+                    <span>AMER AI</span>
+                    👋
+                </h1>
+
 
                 <p>
                     أنا مساعدك الذكي. اسألني عن أي شيء
                     وسأحاول مساعدتك بأفضل طريقة ممكنة.
                 </p>
+
 
                 <div class="suggestions">
 
@@ -98,13 +144,16 @@
                         💡 اشرح لي فكرة بطريقة بسيطة
                     </button>
 
+
                     <button class="suggestion">
                         💻 ساعدني في كتابة كود
                     </button>
 
+
                     <button class="suggestion">
                         ✍️ اكتب لي موضوعًا
                     </button>
+
 
                     <button class="suggestion">
                         🧠 اختبر معلوماتي
@@ -114,8 +163,12 @@
 
             </div>
 
+
             <!-- الرسائل -->
-            <div class="messages" id="messages"></div>
+            <div
+                class="messages"
+                id="messages"
+            ></div>
 
         </section>
 
@@ -125,9 +178,13 @@
 
             <div class="input-box">
 
-                <button class="attach-button" title="إرفاق ملف">
+                <button
+                    class="attach-button"
+                    title="إرفاق ملف"
+                >
                     ＋
                 </button>
+
 
                 <textarea
                     id="messageInput"
@@ -135,11 +192,16 @@
                     rows="1"
                 ></textarea>
 
-                <button class="send-button" id="sendButton">
+
+                <button
+                    class="send-button"
+                    id="sendButton"
+                >
                     ➤
                 </button>
 
             </div>
+
 
             <div class="input-note">
                 AMER AI قد يخطئ أحيانًا، لذلك راجع المعلومات المهمة.
@@ -153,4 +215,5 @@
     <script src="script.js"></script>
 
 </body>
+
 </html>

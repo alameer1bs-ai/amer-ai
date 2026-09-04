@@ -696,3 +696,52 @@ body {
         max-width: 88%;
     }
 }
+.brand-image {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+/* صورة AMER AI في القائمة الجانبية */
+.brand-image {
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+
+/* صورة AMER AI في الهيدر */
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.header-logo {
+    width: 42px;
+    height: 42px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+
+/* صورة الترحيب */
+.welcome-logo {
+    width: 90px;
+    height: 90px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+
+.welcome-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
