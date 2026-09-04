@@ -1,48 +1,18 @@
-import express from "express";
 import OpenAI from "openai";
-
-const app = express();
-
-app.use(express.json());
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
 
-app.get("/", (req, res) => {
-    res.sendFile("index.html", {
-        root: process.cwd()
-    });
-});
+export default async function handler(req, res) {
+    if (req.method !== "POST") {
+        return res.status(405).json({
+            error: "Method not allowed"
+        });
+    }
 
-app.use(express.static(process.cwd()));
-
-function isDeveloperQuestion(text) {
-    const q = text
-        .toLowerCase()
-        .replace(/[؟?!.,]/g, "");
-
-    const keywords = [
-        "مين صنعك",
-        "من صنعك",
-        "مين اخترعك",
-        "من اخترعك",
-        "مين طورك",
-        "من طورك",
-        "مين مطورك",
-        "من مطورك",
-        "مين برمجك",
-        "من برمجك",
-        "مين صممك",
-        "من صممك"
-    ];
-
-    return keywords.some(word => q.includes(word));
-}
-
-app.post("/api/chat", async (req, res) => {
     try {
-        const message = req.body.message;
+        const { message } = req.body;
 
         if (!message) {
             return res.status(400).json({
@@ -50,7 +20,26 @@ app.post("/api/chat", async (req, res) => {
             });
         }
 
-        if (isDeveloperQuestion(message)) {
+        const q = message
+            .toLowerCase()
+            .replace(/[؟?!.,]/g, "");
+
+        const keywords = [
+            "مين صنعك",
+            "من صنعك",
+            "مين اخترعك",
+            "من اخترعك",
+            "مين طورك",
+            "من طورك",
+            "مين مطورك",
+            "من مطورك",
+            "مين برمجك",
+            "من برمجك",
+            "مين صممك",
+            "من صممك"
+        ];
+
+        if (keywords.some(word => q.includes(word))) {
             return res.json({
                 reply:
                     "تم تطويري بواسطة المهندس محمد إبراهيم محمد أحمد عامر."
@@ -74,17 +63,15 @@ app.post("/api/chat", async (req, res) => {
             input: message
         });
 
-        res.json({
+        return res.json({
             reply: response.output_text
         });
 
     } catch (error) {
         console.error(error);
 
-        res.status(500).json({
+        return res.status(500).json({
             error: "حدث خطأ أثناء الاتصال بالذكاء الاصطناعي."
         });
     }
-});
-
-export default app;
+}
