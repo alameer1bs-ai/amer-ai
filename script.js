@@ -3,6 +3,10 @@ const sendButton = document.getElementById("sendButton");
 const messages = document.getElementById("messages");
 const welcome = document.getElementById("welcome");
 
+// سجل المحادثة الحالي
+let conversationHistory = [];
+
+
 // إرسال الرسالة
 async function sendMessage() {
     const message = messageInput.value.trim();
@@ -14,13 +18,22 @@ async function sendMessage() {
         welcome.style.display = "none";
     }
 
-    // إضافة رسالة المستخدم
+    // إضافة رسالة المستخدم للواجهة
     addMessage(message, "user");
+
+    // إضافة الرسالة لسجل المحادثة
+    conversationHistory.push({
+        role: "user",
+        content: message
+    });
 
     messageInput.value = "";
 
     // رسالة انتظار
     const loading = addMessage("🤖 جاري التفكير...", "bot");
+
+    // تعطيل الزر أثناء الرد
+    sendButton.disabled = true;
 
     try {
         const response = await fetch("/api/chat", {
@@ -29,7 +42,8 @@ async function sendMessage() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                message: message
+                message: message,
+                history: conversationHistory
             })
         });
 
@@ -42,7 +56,14 @@ async function sendMessage() {
             throw new Error(data.error || "حدث خطأ في السيرفر");
         }
 
+        // إضافة رد AMER AI للواجهة
         addMessage(data.reply, "bot");
+
+        // إضافة رد الذكاء الاصطناعي للسجل
+        conversationHistory.push({
+            role: "assistant",
+            content: data.reply
+        });
 
     } catch (error) {
 
@@ -50,10 +71,20 @@ async function sendMessage() {
 
         loading.remove();
 
+        // لو حصل خطأ نحذف آخر رسالة للمستخدم من السجل
+        conversationHistory.pop();
+
         addMessage(
-            "⚠️ حصل خطأ أثناء الاتصال بـ AMER AI. تأكد أن السيرفر يعمل.",
+            "⚠️ حصل خطأ أثناء الاتصال بـ AMER AI. حاول مرة أخرى.",
             "bot"
         );
+
+    } finally {
+
+        // إعادة تفعيل زر الإرسال
+        sendButton.disabled = false;
+
+        messageInput.focus();
     }
 }
 
@@ -88,6 +119,7 @@ messageInput.addEventListener("keydown", function(event) {
 
         sendMessage();
     }
+
 });
 
 
@@ -115,6 +147,8 @@ if (newChat) {
 
         messages.innerHTML = "";
 
+        conversationHistory = [];
+
         if (welcome) {
             welcome.style.display = "block";
         }
@@ -122,6 +156,7 @@ if (newChat) {
         messageInput.value = "";
 
         messageInput.focus();
+
     });
 }
 
@@ -135,9 +170,13 @@ if (clearButton) {
 
         messages.innerHTML = "";
 
+        conversationHistory = [];
+
         if (welcome) {
             welcome.style.display = "block";
         }
+
+        messageInput.focus();
 
     });
 }
@@ -152,10 +191,16 @@ if (themeButton) {
 
         document.body.classList.toggle("light-mode");
 
-        if (document.body.classList.contains("light-mode")) {
-            themeButton.querySelector("span").textContent = "الوضع النهاري";
-        } else {
-            themeButton.querySelector("span").textContent = "الوضع الليلي";
+        const span = themeButton.querySelector("span");
+
+        if (span) {
+
+            if (document.body.classList.contains("light-mode")) {
+                span.textContent = "الوضع النهاري";
+            } else {
+                span.textContent = "الوضع الليلي";
+            }
+
         }
 
     });
