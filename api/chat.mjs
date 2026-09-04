@@ -41,25 +41,22 @@ export default async function handler(req, res) {
 
         if (keywords.some(word => q.includes(word))) {
             return res.json({
-                reply:
-                    "تم تطويري بواسطة المهندس محمد إبراهيم محمد أحمد عامر."
+                reply: "تم تطويري بواسطة المهندس محمد إبراهيم محمد أحمد عامر."
             });
         }
 
         const response = await openai.responses.create({
             model: "gpt-5.6-luna",
-
             instructions: `
 أنت AMER AI، مساعد ذكاء اصطناعي عربي.
 
 كن مفيدًا وواضحًا وودودًا.
 إذا تحدث المستخدم بالعربية، أجب بالعربية.
-إذا تحدث بالإنجليزية، أجب بالإنجليزية.
+إذا تحدث المستخدم بالإنجليزية، أجب بالإنجليزية.
 
 معلومة أساسية:
 تم تطوير AMER AI بواسطة المهندس محمد إبراهيم محمد أحمد عامر.
             `,
-
             input: message
         });
 
