@@ -1,18 +1,29 @@
 import express from "express";
 import OpenAI from "openai";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 });
 
 app.use(express.json());
-app.use(express.static("."));
+
+// عرض ملفات الموقع
+app.use(express.static(__dirname));
+
+// الصفحة الرئيسية
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "index.html"));
+});
 
 function isDeveloperQuestion(text) {
     const q = text
@@ -38,7 +49,6 @@ function isDeveloperQuestion(text) {
 }
 
 app.post("/api/chat", async (req, res) => {
-
     try {
         const message = req.body.message;
 
@@ -48,7 +58,6 @@ app.post("/api/chat", async (req, res) => {
             });
         }
 
-        // السؤال عن مطور AMER AI
         if (isDeveloperQuestion(message)) {
             return res.json({
                 reply:
@@ -78,7 +87,6 @@ app.post("/api/chat", async (req, res) => {
         });
 
     } catch (error) {
-
         console.error(error);
 
         res.status(500).json({
@@ -87,7 +95,14 @@ app.post("/api/chat", async (req, res) => {
     }
 });
 
-app.listen(PORT, () => {
-    console.log("AMER AI يعمل على:");
-    console.log(`http://localhost:${PORT}`);
-});
+// مهم لـ Vercel
+export default app;
+
+// تشغيل محلي فقط
+if (process.env.NODE_ENV !== "production") {
+    const PORT = process.env.PORT || 3000;
+
+    app.listen(PORT, () => {
+        console.log(`AMER AI يعمل على http://localhost:${PORT}`);
+    });
+}
