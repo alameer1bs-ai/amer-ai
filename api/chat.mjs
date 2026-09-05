@@ -139,10 +139,16 @@ export default async function handler(req, res) {
 
         console.error("OpenAI Error:", error);
 
+        // إظهار الخطأ الحقيقي لمعرفة سبب توقف الموقع
         return res.status(500).json({
 
             error:
-                "حدث خطأ أثناء الاتصال بالذكاء الاصطناعي."
+                error?.message ||
+                "حدث خطأ غير معروف",
+
+            status:
+                error?.status ||
+                500
 
         });
 
